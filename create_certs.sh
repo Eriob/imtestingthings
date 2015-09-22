@@ -1,8 +1,8 @@
 echo "Génération de certificats par Simon Hallay"
 echo "Nom pour le répertoire ?"
 read repetoire
-mkdir $repertoire
-cd $repertoire
+mkdir /home/certificats/$repertoire
+cd /home/certificats/$repertoire
 
 echo "[ ca ]
 default_ca      = CA_default
@@ -103,20 +103,23 @@ echo '01' ca/serial
 mkdir -p cassl/newcerts
 touch cassl/index.txt
 echo '01' > cassl/serial
+echo "-----1-----"
 openssl genrsa -out ca/ca.key -des3 2048
 openssl req -new -x509 -key ca/ca.key -out ca/ca.pem -config ./openssl.cnf -extensions CA_ROOT
 openssl x509 -in ca/ca.pem -text -noout
 
+echo "-----2-----"
 openssl genrsa -out cassl/cassl.key -des3 2048
 openssl req -new -key cassl/cassl.key -out cassl/cassl.crs -config ./openssl.cnf
 openssl ca -out cassl/cassl.pem -config ./openssl.cnf -extensions CA_SSL -infiles cassl/cassl.crs
-
 openssl x509 -in cassl/cassl.pem -text -noout
 
+echo "-----3-----"
 openssl genrsa -out cassl/serverssl.key -des3 1024
 openssl req -new -key cassl/serverssl.key -out cassl/serverssl.crs -config ./openssl.cnf
 openssl ca -out cassl/serverssl.pem -name CA_ssl_default -config ./openssl.cnf -extensions SERVER_RSA_SSL -infiles cassl/serverssl.crs
 
+echo "-----4-----"
 openssl genrsa -out cassl/serverssl.key -des3 1024
 openssl ca -out cassl/clientssl.pem -name CA_ssl_default -config ./openssl.cnf -extensions CLIENT_RSA_SSL -infiles cassl/clientssl.crs
 openssl pkcs12 -export -inkey cassl/clientssl.key -in cassl/clientssl.pem -out clientssl.p12 -name "Certificat client"
