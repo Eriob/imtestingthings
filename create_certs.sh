@@ -1,9 +1,8 @@
 echo "Génération de certificats par Simon Hallay"
 echo "Nom pour le répertoire ?"
 read repetoire
-mkdir /home/certificats/$repertoire
-cd /home/certificats/$repertoire
-
+mkdir /home/certificats
+cd /home/certificats
 echo "[ ca ]
 default_ca      = CA_default
 
