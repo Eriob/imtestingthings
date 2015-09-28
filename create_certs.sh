@@ -121,6 +121,7 @@ openssl ca -out cassl/serverssl.pem -name CA_ssl_default -config ./openssl.cnf -
 
 echo "-----4-----"
 openssl genrsa -out cassl/clientssl.key -des3 1024
+openssl req -new -key cassl/clientssl.key -out cassl/clientssl.crs -config ./openssl.cnf
 openssl ca -out cassl/clientssl.pem -name CA_ssl_default -config ./openssl.cnf -extensions CLIENT_RSA_SSL -infiles cassl/clientssl.crs
 openssl pkcs12 -export -inkey cassl/clientssl.key -in cassl/clientssl.pem -out clientssl.p12 -name "Certificat client"
 
