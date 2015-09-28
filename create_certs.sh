@@ -105,24 +105,34 @@ touch cassl/index.txt
 echo '01' > cassl/serial
 echo "-----1-----"
 openssl genrsa -out ca/ca.key -des3 2048
+echo "-----2-----"
 openssl req -new -x509 -key ca/ca.key -out ca/ca.pem -config ./openssl.cnf -extensions CA_ROOT
+echo "-----3-----"
 openssl x509 -in ca/ca.pem -text -noout
 
-echo "-----2-----"
+echo "-----4-----"
 openssl genrsa -out cassl/cassl.key -des3 2048
+echo "-----5-----"
 openssl req -new -key cassl/cassl.key -out cassl/cassl.crs -config ./openssl.cnf
+echo "-----6-----"
 openssl ca -out cassl/cassl.pem -config ./openssl.cnf -extensions CA_SSL -infiles cassl/cassl.crs
+echo "-----7-----"
 openssl x509 -in cassl/cassl.pem -text -noout
 
-echo "-----3-----"
+echo "-----8-----"
 openssl genrsa -out cassl/serverssl.key -des3 1024
+echo "-----9-----"
 openssl req -new -key cassl/serverssl.key -out cassl/serverssl.crs -config ./openssl.cnf
+echo "-----10----"
 openssl ca -out cassl/serverssl.pem -name CA_ssl_default -config ./openssl.cnf -extensions SERVER_RSA_SSL -infiles cassl/serverssl.crs
 
-echo "-----4-----"
+echo "-----11----"
 openssl genrsa -out cassl/clientssl.key -des3 1024
+echo "-----12----"
 openssl req -new -key cassl/clientssl.key -out cassl/clientssl.crs -config ./openssl.cnf
+echo "-----13----"
 openssl ca -out cassl/clientssl.pem -name CA_ssl_default -config ./openssl.cnf -extensions CLIENT_RSA_SSL -infiles cassl/clientssl.crs
+echo "-----14----"
 openssl pkcs12 -export -inkey cassl/clientssl.key -in cassl/clientssl.pem -out clientssl.p12 -name "Certificat client"
 
 
